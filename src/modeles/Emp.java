@@ -1,32 +1,32 @@
 package modeles;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class Emp {
-    private int empno;
+    private Integer empno;
     private String ename;
     private String job;
-    private int mgr;
-    private LocalDate hiredate;
-    private int sal;
-    private int comm;
-    private int deptno;
+    private Integer mgr;
+    private Date hiredate;
+    private Integer sal;
+    private Integer comm;
+    private Integer deptno;
 
 
     //setter
-    public void setComm(int comm) {
+    public void setComm(Integer comm) {
         this.comm = comm;
     }
-    public void setHiredate(LocalDate hiredate) {
+    public void setHiredate(Date hiredate) {
         this.hiredate = hiredate;
     }
-    public void setDeptno(int deptno) {
+    public void setDeptno(Integer deptno) {
         this.deptno = deptno;
     }
-    public void setMgr(int mgr) {
+    public void setMgr(Integer mgr) {
         this.mgr = mgr;
     }
-    public void setEmpno(int empno) {
+    public void setEmpno(Integer empno) {
         this.empno = empno;
     }
 
@@ -38,33 +38,33 @@ public class Emp {
         this.job = job;
     }
 
-    public void setSal(int sal) {
+    public void setSal(Integer sal) {
         this.sal = sal;
     }
 
     //getter
-    public int getComm() {
+    public Integer getComm() {
         return comm;
     }
-    public int getDeptno() {
+    public Integer getDeptno() {
         return deptno;
     }
-    public int getEmpno() {
+    public Integer getEmpno() {
         return empno;
     }
     public String getEname() {
         return ename;
     }
-    public LocalDate getHiredate() {
+    public Date getHiredate() {
         return hiredate;
     }
     public String getJob() {
         return job;
     }
-    public int getMgr() {
+    public Integer getMgr() {
         return mgr;
     }
-    public int getSal() {
+    public Integer getSal() {
         return sal;
     }
 
