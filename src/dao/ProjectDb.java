@@ -227,56 +227,8 @@ public class ProjectDb extends Db {
         return -999;
     }
 
-    // insertion de donnes dans la base
-    public String getQueryInsert(Object obj) {
-        try {
-            String sql = "";
-            String sqlInsert = " INSERT INTO ".concat(obj.getClass().getSimpleName()).concat(" ");
-            String sqlValue = " VALUES ";
-            String allColumn = "";
-            String allValue = "";
-            HashMap<String, String> atributValues = getAtributAndValueOf(obj);
-
-            for (Map.Entry<String, String> atr : atributValues.entrySet()) {
-                allColumn += atr.getKey();
-                allColumn += ",";
-
-                allValue += atr.getValue();
-                allValue += ",";
-            }
-
-            // effacé les exedent de ,
-            if (allColumn.endsWith(",")) {
-                allColumn = allColumn.substring(0, allColumn.length() - 1);
-            }
-
-            if (allValue.endsWith(",")) {
-                allValue = allValue.substring(0, allValue.length() - 1);
-            }
-
-            // formé les requettes
-            sqlInsert = sqlInsert.concat("(").concat(allColumn).concat(")");
-            sqlValue = sqlValue.concat("(").concat(allValue).concat(")");
-
-            sql = sqlInsert.concat(sqlValue);
-
-            return sql;
-        } catch (Exception e) {
-
-        }
-        return null;
-    }
-
     public int insert(Object obj) {
-        String sql = getQueryInsert(obj);
-        int rt = 0;
-        try {
-            rt = executeUpdate(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            ;
-        }
-        return rt;
+        return insert(obj,null);
     }
 
     // LES FONCTION PERMETANT D'UPDATRER DES DONNES DANS LA TABLE

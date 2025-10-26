@@ -1,0 +1,51 @@
+INSERT INTO dept (deptno, dname, loc)
+VALUES (90, 'TEST_DEPT', 'ANTANANARIVO');
+
+
+INSERT INTO emp (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+VALUES (9001, 'RAKOTO', 'CLERK', 7902, TO_DATE('2019-02-14','YYYY-MM-DD'), 1400, NULL, 90);
+
+INSERT INTO emp (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+VALUES (9002, 'RABE', 'SALESMAN', 7698, TO_DATE('2017-06-10','YYYY-MM-DD'), 2800, 150, 90);
+
+INSERT INTO emp (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+VALUES (9003, 'RANDRI', 'ANALYST', 7566, TO_DATE('2015-09-21','YYYY-MM-DD'), 4500, NULL, 90);
+
+INSERT INTO emp (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+VALUES (9004, 'RASOANA', 'MANAGER', 7839, TO_DATE('2013-04-07','YYYY-MM-DD'), 5200, NULL, 90);
+
+INSERT INTO emp (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+VALUES (9005, 'RAKOTOBE', 'CLERK', 7566, TO_DATE('2021-01-12','YYYY-MM-DD'), 1600, NULL, 90);
+
+
+
+-- RAKOTO
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9001, TO_DATE('2011-03-10','YYYY-MM-DD'), 900);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9001, TO_DATE('2014-07-21','YYYY-MM-DD'), 1200);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9001, TO_DATE('2018-02-14','YYYY-MM-DD'), 1400);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9001, TO_DATE('2022-10-05','YYYY-MM-DD'), 1650);
+
+-- RABE
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9002, TO_DATE('2010-05-12','YYYY-MM-DD'), 1500);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9002, TO_DATE('2013-09-01','YYYY-MM-DD'), 2000);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9002, TO_DATE('2017-06-10','YYYY-MM-DD'), 2800);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9002, TO_DATE('2021-08-29','YYYY-MM-DD'), 3300);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9002, TO_DATE('2024-03-14','YYYY-MM-DD'), 3800);
+
+-- RANDRI
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9003, TO_DATE('2012-01-15','YYYY-MM-DD'), 2500);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9003, TO_DATE('2015-09-21','YYYY-MM-DD'), 4500);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9003, TO_DATE('2020-06-18','YYYY-MM-DD'), 5200);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9003, TO_DATE('2025-01-05','YYYY-MM-DD'), 5800);
+
+-- RASOANA
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9004, TO_DATE('2010-04-07','YYYY-MM-DD'), 4000);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9004, TO_DATE('2014-10-11','YYYY-MM-DD'), 4700);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9004, TO_DATE('2018-03-19','YYYY-MM-DD'), 5200);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9004, TO_DATE('2023-11-02','YYYY-MM-DD'), 5900);
+
+-- RAKOTOBE
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9005, TO_DATE('2013-08-03','YYYY-MM-DD'), 900);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9005, TO_DATE('2017-02-25','YYYY-MM-DD'), 1200);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9005, TO_DATE('2021-01-12','YYYY-MM-DD'), 1600);
+INSERT INTO HIST_SAL (empno, todate, sal) VALUES (9005, TO_DATE('2024-06-18','YYYY-MM-DD'), 2000);
