@@ -14,7 +14,7 @@ interaction base
     - [ok] Recupere les hist_sal
     - [ok] fonction generaliser pour recuperer des objets dans la base
 
-    - insertion de donné dans la base
+    - [ok] insertion de donné dans la base
     - update de donné dans la base
 
 affichage

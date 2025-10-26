@@ -17,17 +17,17 @@ public class App {
             Emp emp = new Emp();
             Date date = Date.valueOf(LocalDate.of(2025, 4, 7));
             emp.setDeptno(99);
-            emp.setHiredate(date);
+            // emp.setHiredate(date);
             emp.setComm(155);
-            emp.setEname("Manjaka");
-            emp.setJob("ETUD");
-            emp.setMgr(null);
-            emp.setSal(50);
+            // emp.setEname("Manjaka");
+            // emp.setJob("ETUD");
+            // emp.setMgr(null);
+            // emp.setSal(50);
             projectDb.startConnexion();
             //Date date = Date.valueOf(LocalDate.of(2025, 4, 3));
             ArrayList<String > atrWithSeq = new ArrayList<>();
             atrWithSeq.add("empno");
-            System.out.println(projectDb.insert(emp,atrWithSeq));
+            System.out.println(projectDb.find(emp));
             projectDb.exit();
         } catch (DriverNotFoundExeption e) {
             e.printStackTrace();

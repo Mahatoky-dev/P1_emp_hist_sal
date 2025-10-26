@@ -42,8 +42,14 @@ public class ProjectDb extends Db {
     // build query for emp with condition
     public String getSqlQueryFor(Object filter) {
         String sql = "select * from " + filter.getClass().getSimpleName().toUpperCase();
-        Field[] fields = filter.getClass().getDeclaredFields();
+        sql = sql.concat(buidConditionFilter(filter));
+        return sql;
+    }
 
+    // CREE UNE CONDITION POUR UN FILTRE
+    public String buidConditionFilter(Object filter) {
+        Field[] fields = filter.getClass().getDeclaredFields();
+        String sql = "";
         try {
             for (Field field : fields) {
                 field.setAccessible(true);
@@ -190,28 +196,12 @@ public class ProjectDb extends Db {
                 fields[i].setAccessible(true);
                 String value = "";
 
-                // mise en forme du valeur de l'atribut en fonction des sequence et de sont type
-                // si l'atribut et de type date ou string alors on l'entour de ""
-                // si l'atribut et null , on insert la valeur null
-                // si l'atribut est une atribut qui a une sequence , on insert la sequence
-                // suivante
-                System.out.println(atrWithseqence != null);
                 if (fields[i].get(obj) == null && !atrWithseqence.contains(fields[i].getName())) {
                     value = "null";
                 } else if (atrWithseqence != null && atrWithseqence.contains(fields[i].getName())) {
                     value = "seq_".concat(fields[i].getName()).concat(".NEXTVAL");
-                } else if (fields[i].getType() == Date.class) {
-
-                    //formaté la date pour que oracle puise l'identifier
-                    LocalDate date = ((Date) fields[i].get(obj)).toLocalDate();
-                    String dateFormated = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-                    value = "'".concat(dateFormated).concat("'");
-
-
-                } else if (fields[i].getType() == String.class) {
-                    value = "'".concat(fields[i].get(obj).toString()).concat("'");
                 } else {
-                    value = fields[i].get(obj).toString();
+                    value = fieldStringValue(fields[i], obj);
                 }
 
                 sqlVal = sqlVal.concat(value).concat(" ");
@@ -286,5 +276,59 @@ public class ProjectDb extends Db {
             ;
         }
         return rt;
+    }
+
+    // LES FONCTION PERMETANT D'UPDATRER DES DONNES DANS LA TABLE
+    public void update(Object filter, Object newVal) {
+        String sql = "UPDATE %s SET %s WHERE %s";
+
+    }
+
+    // prendre les atribut qui change
+    public String getSqlUpdateSetValue(Object newVal) {
+        String sql = "";
+        Field[] fields = newVal.getClass().getDeclaredFields();
+
+        try {
+            for (int i = 0; i < fields.length; i++) {
+                fields[i].setAccessible(true);
+                if (fields[i].get(newVal) != null) {
+                    sql = sql.concat(fields[i].getName()).concat("=").concat(fieldStringValue(fields[i], newVal));
+                    sql = sql.concat(",");
+                }
+            }
+            sql = sql.substring(0, sql.length() - 1);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return sql;
+    }
+
+    public String fieldStringValue(Field field, Object obj) {
+        if (!field.isAccessible()) {
+            field.setAccessible(true);
+        }
+
+        try {
+            Object val = field.get(obj);
+            if (val == null) {
+                return "null";
+
+            } else if (val.getClass() == Date.class) {
+                // formaté la date pour que oracle puise l'identifier
+                LocalDate date = ((Date) field.get(obj)).toLocalDate();
+                String dateFormated = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                return "'".concat(dateFormated).concat("'");
+
+            } else if (val.getClass() == String.class) {
+                return "'".concat(field.get(obj).toString()).concat("'");
+            } else {
+                return field.get(obj).toString();
+            }
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
