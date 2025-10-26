@@ -19,5 +19,5 @@ interaction base
 
 affichage
     - affichage des emp et leur salaire
-    - affichage des emp 
+    - affichage des emp s
 dinamisation de l'affichage par la
