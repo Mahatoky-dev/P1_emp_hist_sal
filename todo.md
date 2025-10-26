@@ -15,9 +15,20 @@ interaction base
     - [ok] fonction generaliser pour recuperer des objets dans la base
 
     - [ok] insertion de donné dans la base
-    - update de donné dans la base
+    - [ok] update de donné dans la base
 
 affichage
+    - importation du projet dans une structure jsp
+    - ceation de page utile
+        - liste des emps avec leurs salaire
+        - formulaire pour modifier le salaire d'un emp
+        - formualire pour afficher le salaire des emp a une date determiné
+    - traitement des donnes venant des pages
+        - servlet modif salaire
+        - servlet affichage des emp ayant la date selectionné
+    - affichage des donnes 
+        - fonction toTabHtml
+
     - affichage des emp et leur salaire
     - affichage des emp s
 dinamisation de l'affichage par la
