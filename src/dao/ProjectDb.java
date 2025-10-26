@@ -4,15 +4,14 @@ import java.lang.reflect.Field;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.print.DocFlavor.STRING;
-
 import dao.exeption.DbQueryErrorExeption;
 import dao.exeption.DriverNotFoundExeption;
-import oracle.security.o3logon.a;
 
 public class ProjectDb extends Db {
 
@@ -159,6 +158,82 @@ public class ProjectDb extends Db {
 
         }
         return null;
+    }
+
+    public String getQueryInsert(Object obj, ArrayList<String> atributWithSeq) {
+        String sql = "INSERT INTO %s (%s) VALUES (%s)";
+        sql = String.format(sql, obj.getClass().getSimpleName(), sqlFieldsNameOf(obj),
+                sqlFieldsValuesOf(obj, atributWithSeq));
+        return sql;
+    }
+
+    public String sqlFieldsNameOf(Object obj) {
+        String atr = "";
+        Field[] fields = obj.getClass().getDeclaredFields();
+
+        // concaténé la liste des nom dees atr de l'obj comme atr1 , atr2 , atr3
+        for (int i = 0; i < fields.length; i++) {
+            atr = atr.concat(fields[i].getName());
+            if (i < fields.length - 1) {
+                atr = atr.concat(",");
+            }
+        }
+        return atr;
+    }
+
+    public String sqlFieldsValuesOf(Object obj, ArrayList<String> atrWithseqence) {
+        String sqlVal = "";
+        try {
+
+            Field[] fields = obj.getClass().getDeclaredFields();
+            for (int i = 0; i < fields.length; i++) {
+                fields[i].setAccessible(true);
+                String value = "";
+
+                // mise en forme du valeur de l'atribut en fonction des sequence et de sont type
+                // si l'atribut et de type date ou string alors on l'entour de ""
+                // si l'atribut et null , on insert la valeur null
+                // si l'atribut est une atribut qui a une sequence , on insert la sequence
+                // suivante
+                System.out.println(atrWithseqence != null);
+                if (fields[i].get(obj) == null && !atrWithseqence.contains(fields[i].getName())) {
+                    value = "null";
+                } else if (atrWithseqence != null && atrWithseqence.contains(fields[i].getName())) {
+                    value = "seq_".concat(fields[i].getName()).concat(".NEXTVAL");
+                } else if (fields[i].getType() == Date.class) {
+
+                    //formaté la date pour que oracle puise l'identifier
+                    LocalDate date = ((Date) fields[i].get(obj)).toLocalDate();
+                    String dateFormated = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                    value = "'".concat(dateFormated).concat("'");
+
+
+                } else if (fields[i].getType() == String.class) {
+                    value = "'".concat(fields[i].get(obj).toString()).concat("'");
+                } else {
+                    value = fields[i].get(obj).toString();
+                }
+
+                sqlVal = sqlVal.concat(value).concat(" ");
+
+                if (i < fields.length - 1) {
+                    sqlVal = sqlVal.concat(",");
+                }
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return sqlVal;
+    }
+
+    public int insert(Object obj, ArrayList<String> atrWithseqence) {
+        String sql = getQueryInsert(obj, atrWithseqence);
+        try {
+            return executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -999;
     }
 
     // insertion de donnes dans la base

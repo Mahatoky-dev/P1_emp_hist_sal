@@ -7,6 +7,7 @@ import modeles.Hist_sal;
 import modeles.Salgrade;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class App {
     public static void main(String[] args) {
@@ -14,11 +15,19 @@ public class App {
         try {
             ProjectDb projectDb = new ProjectDb();
             Emp emp = new Emp();
+            Date date = Date.valueOf(LocalDate.of(2025, 4, 7));
             emp.setDeptno(99);
-            emp.setHiredate(Date.valueOf(LocalDate.of(2025, 4, 4)));
+            emp.setHiredate(date);
+            emp.setComm(155);
+            emp.setEname("Manjaka");
+            emp.setJob("ETUD");
+            emp.setMgr(null);
+            emp.setSal(50);
             projectDb.startConnexion();
             //Date date = Date.valueOf(LocalDate.of(2025, 4, 3));
-            System.out.println(projectDb.getQueryInsert(emp));
+            ArrayList<String > atrWithSeq = new ArrayList<>();
+            atrWithSeq.add("empno");
+            System.out.println(projectDb.insert(emp,atrWithSeq));
             projectDb.exit();
         } catch (DriverNotFoundExeption e) {
             e.printStackTrace();
