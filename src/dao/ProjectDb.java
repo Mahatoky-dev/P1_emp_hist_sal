@@ -5,9 +5,14 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.print.DocFlavor.STRING;
 
 import dao.exeption.DbQueryErrorExeption;
 import dao.exeption.DriverNotFoundExeption;
+import oracle.security.o3logon.a;
 
 public class ProjectDb extends Db {
 
@@ -72,7 +77,7 @@ public class ProjectDb extends Db {
             // initialiser les valeurs de l'objet
             for (Field field : fields) {
                 field.setAccessible(true);
-                field.set(obj,getFieldValueFromResultSet(field, rs));
+                field.set(obj, getFieldValueFromResultSet(field, rs));
             }
             return obj;
 
@@ -102,7 +107,9 @@ public class ProjectDb extends Db {
             }
 
             return value;
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            // dans la plus part des cas le nom du field dans la classe n'est pas une
+            // atribut de rs
             e.printStackTrace();
         }
 
@@ -110,7 +117,7 @@ public class ProjectDb extends Db {
     }
 
     // prendre toute les employers
-    public ArrayList<Object> find(Object filter){
+    public ArrayList<Object> find(Object filter) {
         try {
             ArrayList<Object> employeList = new ArrayList<>();
             String sql = getSqlQueryFor(filter);
@@ -127,5 +134,82 @@ public class ProjectDb extends Db {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private HashMap<String, String> getAtributAndValueOf(Object obj) {
+        try {
+            Field[] fields = obj.getClass().getDeclaredFields();
+            HashMap<String, String> atributs = new HashMap<>();
+            // identification des atributs
+            for (int i = 0; i < fields.length; i++) {
+                fields[i].setAccessible(true);
+                if (fields[i].get(obj) != null) {
+                    String value = "";
+                    if (fields[i].getType() == String.class || fields[i].getType() == Date.class) {
+                        value = "'" + fields[i].get(obj).toString() + "'";
+                    } else {
+                        value = fields[i].get(obj).toString();
+                    }
+                    atributs.put(fields[i].getName(), value);
+                }
+            }
+            return atributs;
+
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
+    // insertion de donnes dans la base
+    public String getQueryInsert(Object obj) {
+        try {
+            String sql = "";
+            String sqlInsert = " INSERT INTO ".concat(obj.getClass().getSimpleName()).concat(" ");
+            String sqlValue = " VALUES ";
+            String allColumn = "";
+            String allValue = "";
+            HashMap<String, String> atributValues = getAtributAndValueOf(obj);
+
+            for (Map.Entry<String, String> atr : atributValues.entrySet()) {
+                allColumn += atr.getKey();
+                allColumn += ",";
+
+                allValue += atr.getValue();
+                allValue += ",";
+            }
+
+            // effacé les exedent de ,
+            if (allColumn.endsWith(",")) {
+                allColumn = allColumn.substring(0, allColumn.length() - 1);
+            }
+
+            if (allValue.endsWith(",")) {
+                allValue = allValue.substring(0, allValue.length() - 1);
+            }
+
+            // formé les requettes
+            sqlInsert = sqlInsert.concat("(").concat(allColumn).concat(")");
+            sqlValue = sqlValue.concat("(").concat(allValue).concat(")");
+
+            sql = sqlInsert.concat(sqlValue);
+
+            return sql;
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
+    public int insert(Object obj) {
+        String sql = getQueryInsert(obj);
+        int rt = 0;
+        try {
+            rt = executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ;
+        }
+        return rt;
     }
 }

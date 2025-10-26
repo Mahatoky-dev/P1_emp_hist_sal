@@ -7,11 +7,17 @@ base de donné Oracle
     - [ok] insertion d'historique de sal 
 
 interaction base 
-    - creation des classes similaire au tab dans la base
-    - creation de fonction qui recupere les emps
-    - Recupere les emps mais cette fois ci en liste d'emp
-    - Recupere les emps selon un filtre
-    - Recupere les hist_sal
+    - [ok] creation des classes similaire au tab dans la base
+    - [ok] creation de fonction qui recupere les emps
+    - [ok] Recupere les emps mais cette fois ci en liste d'emp
+    - [ok] Recupere les emps selon un filtre
+    - [ok] Recupere les hist_sal
+    - [ok] fonction generaliser pour recuperer des objets dans la base
+
+    - insertion de donné dans la base
+    - update de donné dans la base
 
 affichage
-dinamisation de l'affichage par la base
+    - affichage des emp et leur salaire
+    - affichage des emp 
+dinamisation de l'affichage par la
