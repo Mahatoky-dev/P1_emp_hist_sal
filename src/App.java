@@ -16,18 +16,21 @@ public class App {
             ProjectDb projectDb = new ProjectDb();
             Emp emp = new Emp();
             Date date = Date.valueOf(LocalDate.of(2025, 4, 7));
-            emp.setDeptno(99);
+            //emp.setEmpno(100);
             // emp.setHiredate(date);
-            emp.setComm(155);
+            //emp.setComm(155);
             // emp.setEname("Manjaka");
             // emp.setJob("ETUD");
             // emp.setMgr(null);
-            // emp.setSal(50);
+            emp.setDeptno(99);
+            emp.setSal(50);
             projectDb.startConnexion();
             //Date date = Date.valueOf(LocalDate.of(2025, 4, 3));
             ArrayList<String > atrWithSeq = new ArrayList<>();
             atrWithSeq.add("empno");
-            System.out.println(projectDb.find(emp));
+            Emp salVal = new Emp();
+            salVal.setSal(100);
+            System.out.println(projectDb.update(emp,salVal));
             projectDb.exit();
         } catch (DriverNotFoundExeption e) {
             e.printStackTrace();

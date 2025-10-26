@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dao.exeption.DbQueryErrorExeption;
+import dao.exeption.DiferentClassExeption;
 import dao.exeption.DriverNotFoundExeption;
 
 public class ProjectDb extends Db {
@@ -279,9 +280,26 @@ public class ProjectDb extends Db {
     }
 
     // LES FONCTION PERMETANT D'UPDATRER DES DONNES DANS LA TABLE
-    public void update(Object filter, Object newVal) {
-        String sql = "UPDATE %s SET %s WHERE %s";
+    public int update(Object filter, Object objWithNewVal) {
+        try {
+            if (filter.getClass() != objWithNewVal.getClass()) {
+                String msg = "La classe de filtre et celle de l'objet avec les nouvells valeur doivent etre les memes";
+                throw new DiferentClassExeption(msg);
+            }
+        } catch (DiferentClassExeption e) {
+            e.printStackTrace();
+        }
 
+        String sql = "UPDATE %s SET %s %s";
+        sql = String.format(sql, filter.getClass().getSimpleName(), getSqlUpdateSetValue(objWithNewVal),
+                buidConditionFilter(filter));
+
+        try {
+            return executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -999;
     }
 
     // prendre les atribut qui change
